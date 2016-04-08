@@ -39,7 +39,7 @@
 #define WINDOW_WIDTH  500
 #define WINDOW_HEIGHT 360
 
-#define MAX_PARTICLES 10000
+#define MAX_PARTICLES 50000
 #define GRAVITY 0.1
 
 //X Windows variables
@@ -245,7 +245,9 @@ void bubblemode(Game *game)
 	float xvel = (float)random/10.0;
 	int y = WINDOW_HEIGHT - 5;
 	int x = 70;
-	makeParticle(game, x, y, xvel);
+	for (int i = 0; i < 50; i++) {
+		makeParticle(game, x, y, xvel);
+	}
 
 }
 
@@ -324,12 +326,12 @@ void movement(Game *game)
 	    	    p->s.center.x  <= s->center.x + (s->width)) {
 			if (p->velocity.x < 0.5 && 
 			    p->velocity.x > 0.0) {
-				p->velocity.x += 0.1;
+				//p->velocity.x += 0.1;
 			}
 
 			if (p->velocity.x < 0)
 				p->velocity.x *= -1.0;
-			p->velocity.y *= -0.5;
+			p->velocity.y *= -0.3;
 		}
 	}
 		float d1 = p->s.center.y - circle.center.y;
@@ -342,7 +344,8 @@ void movement(Game *game)
 			    p->s.center.x > circle.center.x) 
 				p->velocity.x += 0.05;
 			else 
-				p->velocity.x -= 0.1;	
+				p->velocity.x -= 0.1;
+			p->velocity.y *= 1.0;	
 		}	
 		//check for off-screen
 		if (p->s.center.y < 0.0 ||
@@ -410,8 +413,8 @@ void render(Game *game)
 		int randomGreen = rand()% 50 + 120;
 		int randomRed = rand()% 50 + 130;
 		glColor3ub(randomRed, randomGreen ,randomBlue);
-		w = 2;
-		h = 2;
+		w = 1;
+		h = 1;
 		glBegin(GL_QUADS);
 			glVertex2i(c->x-w, c->y-h);
 			glVertex2i(c->x-w, c->y+h);
