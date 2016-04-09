@@ -41,6 +41,9 @@
 
 #define MAX_PARTICLES 50000
 #define GRAVITY 0.1
+extern "C" {
+	#include "fonts.h"
+}
 
 //X Windows variables
 Display *dpy;
@@ -216,6 +219,9 @@ void init_opengl(void)
 	glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
 	//Set the screen background color
 	glClearColor(0.1, 0.1, 0.1, 1.0);
+	//Do this to allow fonts
+	glEnable(GL_TEXTURE_2D);
+	initialize_fonts();
 }
 
 void makeParticle(Game *game, int x, int y, float xvel) {
@@ -226,7 +232,7 @@ void makeParticle(Game *game, int x, int y, float xvel) {
 	Particle *p = &game->particle[game->n];
 	p->s.center.x = x;
 	p->s.center.y = y;
-	int randomY = rand()% 30-60;
+	int randomY = rand()% 30-40;
 	float yvel = randomY/10.0;
 	p->velocity.y = yvel;
 	p->velocity.x =  xvel;
@@ -239,13 +245,11 @@ void bubblemode(Game *game)
 	if (g.bubblemode !=1)
 		return;
 	int random = 0;
-	while (random == 0) {
-		random = rand() % 60 - 30;
-	}
-	float xvel = (float)random/10.0;
 	int y = WINDOW_HEIGHT - 5;
 	int x = 70;
 	for (int i = 0; i < 50; i++) {
+		random = rand() % 60 - 30;
+		float xvel = (float)random/10.0;
 		makeParticle(game, x, y, xvel);
 	}
 
@@ -324,11 +328,8 @@ void movement(Game *game)
 	    	    p->s.center.y  <= s->center.y + (s->height) &&
 	    	    p->s.center.x  >= s->center.x - (s->width) &&
 	    	    p->s.center.x  <= s->center.x + (s->width)) {
-			if (p->velocity.x < 0.5 && 
-			    p->velocity.x > 0.0) {
-				//p->velocity.x += 0.1;
-			}
-
+			if (p->velocity.x >= 0 && p->velocity.x <= 0.5)
+				p->velocity.x += 0.5;
 			if (p->velocity.x < 0)
 				p->velocity.x *= -1.0;
 			p->velocity.y *= -0.3;
@@ -336,16 +337,16 @@ void movement(Game *game)
 	}
 		float d1 = p->s.center.y - circle.center.y;
 		float d2 = p->s.center.x - circle.center.x;
-		float dist = abs(sqrt(d1*d1 + d2*d2));
+		float dist = sqrt(d1*d1 + d2*d2);
 		      	
 		if (dist <= circle.radius) {
-			p->velocity.y *= -0.3;
-			if (p->velocity.x > 1.8 ||
+	//		p->velocity.y *= -0.3;
+			if (p->velocity.x > 2.5 ||
 			    p->s.center.x > circle.center.x) 
 				p->velocity.x += 0.05;
 			else 
 				p->velocity.x -= 0.1;
-			p->velocity.y *= 1.0;	
+			p->velocity.y *= -0.3;	
 		}	
 		//check for off-screen
 		if (p->s.center.y < 0.0 ||
@@ -409,12 +410,12 @@ void render(Game *game)
 	glPushMatrix();
 	for (int i =0; i < game->n; i++) {
 		Vec *c = &game->particle[i].s.center;
-		int randomBlue = rand()% 50 + 200;
-		int randomGreen = rand()% 50 + 120;
-		int randomRed = rand()% 50 + 130;
+		int randomBlue = rand()% 60 + 190;
+		int randomGreen = rand()% 70 + 100;
+		int randomRed = rand()% 80 + 100;
 		glColor3ub(randomRed, randomGreen ,randomBlue);
-		w = 1;
-		h = 1;
+		w = 2;
+		h = 2;
 		glBegin(GL_QUADS);
 			glVertex2i(c->x-w, c->y-h);
 			glVertex2i(c->x-w, c->y+h);
