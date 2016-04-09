@@ -383,6 +383,33 @@ void render(Game *game)
 	glClear(GL_COLOR_BUFFER_BIT);
 	//Draw shapes...
 	bubblemode(game);
+	Rect r[6];
+
+	r[0].bot =  WINDOW_HEIGHT - 21;
+	r[0].left = 370;
+	r[0].center = 1;
+
+	r[1].bot = WINDOW_HEIGHT - 51;
+	r[1].left = 80;
+	r[1].center = 1;
+
+	r[2].bot = WINDOW_HEIGHT - 91;
+	r[2].left = 130;
+	r[2].center = 1;
+
+	r[3].bot = WINDOW_HEIGHT - 131;
+	r[3].left = 180;
+	r[3].center = 1;
+
+	r[4].bot = WINDOW_HEIGHT - 171;
+	r[4].left = 230;
+	r[4].center = 1;
+
+	r[5].bot = WINDOW_HEIGHT - 211;
+	r[5].left = 280;
+	r[5].center = 1;
+
+	
 	//draw box
 	for (int i = 0; i < 5; i++) {
 		Shape *s;
@@ -400,6 +427,13 @@ void render(Game *game)
 		glEnd();
 		glPopMatrix();
 	}
+	
+	ggprint8b(&r[0], 0, 0x00ff0000, "cs335 hw1 - Waterfall Model");
+	ggprint16(&r[1], 0, 0x00ffa500, "Requirements");
+	ggprint16(&r[2], 0, 0x00ffa500, "Design");
+	ggprint16(&r[3], 0, 0x00ffa500, "Coding");
+	ggprint16(&r[4], 0, 0x00ffa500, "Testing");
+	ggprint16(&r[5], 0, 0x00ffa500, "Maintenance");
 	//draw all particles here
 	drawCircle(circle.center.x, 
 		circle.center.y, 
