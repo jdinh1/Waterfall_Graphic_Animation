@@ -1,4 +1,6 @@
-//cs335 Spring 2015 Lab-1
+//Jonathan Dinh
+//cs335 Spring 2016 Homework-1
+//4-9-2016
 //This program demonstrates the use of OpenGL and XWindows
 //
 //Assignment is to modify this program.
@@ -170,7 +172,7 @@ void set_title(void)
 {
 	//Set the window title bar.
 	XMapWindow(dpy, win);
-	XStoreName(dpy, win, "335 Lab1   LMB for particle");
+	XStoreName(dpy, win, "335 Homework 1 - Waterfall Model");
 }
 
 void cleanupXWindows(void) {
