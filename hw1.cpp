@@ -298,7 +298,6 @@ int check_keys(XEvent *e, Game *game)
 		switch (key) {
 			case XK_b:
 				g.bubblemode ^= 1;
-				std::cout << g.bubblemode << std::endl;
 				break;
 			case XK_Escape:
 				return 1;
@@ -340,13 +339,16 @@ void movement(Game *game)
 		float dist = sqrt(d1*d1 + d2*d2);
 		      	
 		if (dist <= circle.radius) {
-	//		p->velocity.y *= -0.3;
+			//reposition particles
+			p->s.center.x = (d2/dist) * circle.radius + (float)circle.center.x + 1.0;
+			p->s.center.y = (d1/dist) * circle.radius + (float)circle.center.y + 1.0;
+			
 			if (p->velocity.x > 2.5 ||
 			    p->s.center.x > circle.center.x) 
 				p->velocity.x += 0.05;
 			else 
-				p->velocity.x -= 0.1;
-			p->velocity.y *= -0.3;	
+				p->velocity.x -= 0.2;
+			p->velocity.y -= 0.1;	
 		}	
 		//check for off-screen
 		if (p->s.center.y < 0.0 ||
@@ -386,7 +388,7 @@ void render(Game *game)
 	Rect r[6];
 
 	r[0].bot =  WINDOW_HEIGHT - 21;
-	r[0].left = 370;
+	r[0].left = 440;
 	r[0].center = 1;
 
 	r[1].bot = WINDOW_HEIGHT - 51;
@@ -428,7 +430,8 @@ void render(Game *game)
 		glPopMatrix();
 	}
 	
-	ggprint8b(&r[0], 0, 0x00ff0000, "cs335 hw1 - Waterfall Model");
+	ggprint8b(&r[0], 16, 0x00ff0000, "Waterfall Model");
+	ggprint8b(&r[0], 16, 0x00ff0000, "(B) - Bubble: %s",(g.bubblemode==1) ? "ON ":"OFF");
 	ggprint16(&r[1], 0, 0x00ffa500, "Requirements");
 	ggprint16(&r[2], 0, 0x00ffa500, "Design");
 	ggprint16(&r[3], 0, 0x00ffa500, "Coding");
@@ -448,8 +451,8 @@ void render(Game *game)
 		int randomGreen = rand()% 70 + 100;
 		int randomRed = rand()% 80 + 100;
 		glColor3ub(randomRed, randomGreen ,randomBlue);
-		w = 2;
-		h = 2;
+		w = 2.0;
+		h = 2.0;
 		glBegin(GL_QUADS);
 			glVertex2i(c->x-w, c->y-h);
 			glVertex2i(c->x-w, c->y+h);
