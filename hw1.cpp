@@ -249,7 +249,7 @@ void bubblemode(Game *game)
 	int random = 0;
 	int y = WINDOW_HEIGHT - 5;
 	int x = 70;
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 20; i++) {
 		random = rand() % 60 - 30;
 		float xvel = (float)random/10.0;
 		makeParticle(game, x, y, xvel);
@@ -453,8 +453,8 @@ void render(Game *game)
 		int randomGreen = rand()% 70 + 100;
 		int randomRed = rand()% 80 + 100;
 		glColor3ub(randomRed, randomGreen ,randomBlue);
-		w = 2.0;
-		h = 2.0;
+		w = 1.5;
+		h = 1.5;
 		glBegin(GL_QUADS);
 			glVertex2i(c->x-w, c->y-h);
 			glVertex2i(c->x-w, c->y+h);
